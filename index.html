@@ -7,24 +7,25 @@
     <title>Express API Client</title>
     <script>
         // Function to fetch data from the Express API
-        async function fetchData() {
+        async function fetchData(lastValue) {
             try {
-                const response = await fetch('/getValue');
+                const response = await fetch(`/getValue?lastValue=${lastValue}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
                 document.getElementById('abc').innerText = data.value;
+                fetchData(data.value); // Recursive call to continue long polling
             } catch (error) {
                 console.error('There has been a problem with your fetch operation:', error);
             }
         }
-        setInterval(fetchData, 5000); // Fetch data 5 second
+        fetchData(); // Initial fetch
     </script>
 </head>
 
 <body>
-    <h1>Short Polling example</h1>
+    <h1>Long Polling example</h1>
     <div id="abc"></div>
 </body>
 

@@ -17,14 +17,23 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html')
 })
 
+const queue = []
 
 app.get('/getValue', (req, res) => {
-    res.json(result)
+    if (req.query.lastValue !== result.value) {
+        res.json(result)
+    } else {
+        queue.push(res)
+    }
 })
 
 app.get('/updateValue', (req, res) => {
     result.value = req.query.value
     res.json(result)
+    queue.forEach((response) => {
+        response.json(result)
+    })
+    queue.length = 0 // Clear the queue after sending responses
 })
 
 app.listen(PORT, () => {
