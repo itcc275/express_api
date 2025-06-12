@@ -1,21 +1,32 @@
-// import { ApolloServer } from '@apollo/server';
-// import { startStandaloneServer } from '@apollo/server/standalone';
-// import { typeDefs } from './typeDefs.js';
-// import { resolvers } from './resolvers.js';
+import express from 'express'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-// // The ApolloServer constructor requires two parameters: your schema
-// // definition and your set of resolvers.
-// const server = new ApolloServer({
-//     typeDefs,
-//     resolvers,
-// });
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
-// // Passing an ApolloServer instance to the `startStandaloneServer` function:
-// //  1. creates an Express app
-// //  2. installs your ApolloServer instance as middleware
-// //  3. prepares your app to handle incoming requests
-// const { url } = await startStandaloneServer(server, {
-//     listen: { port: 4000 },
-// });
+const PORT = 4000
 
-// console.log(`🚀  Server ready at: ${url}`);
+const app = express()
+
+const result = {
+    value: 'Hello, World!'
+}
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html')
+})
+
+
+app.get('/getValue', (req, res) => {
+    res.json(result)
+})
+
+app.get('/updateValue', (req, res) => {
+    result.value = req.query.value
+    res.json(result)
+})
+
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`)
+})
