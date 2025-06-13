@@ -5,35 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Express API Client</title>
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 </head>
 
 <body>
-    <h1>Web Socket example</h1>
-    <input id="input" type="text" />
-    <ul id="messages"></ul>
+    <h1>Server-Sent Events example</h1>
+    <div id="messages"></div>
     <script>
-        const socket = io(); // Initialize Socket.IO client equivalent to window.io
-        const input = document.getElementById('input');
-        const messages = document.getElementById('messages');
+        // Create a new EventSource instance
+        const eventSource = new EventSource('/sse');
 
-        input.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                if (input.value) {
-                    console.log(input);
-                    socket.emit('chat message', input.value);
-                    input.value = '';
-                }
-            }
-        });
+        // Listen for messages from the server
+        eventSource.onmessage = function (event) {
+            const message = JSON.parse(event.data);
+            console.log('New message:', message);
+            const messageDiv = document.getElementById('messages');
+            messageDiv.innerHTML += `<p>${message}</p>`; // Assuming message has a 'text' property
+            // You can update the UI or perform other actions with the message here
+        };
 
-        socket.on('chat message', function (msg) {
-            const item = document.createElement('li');
-            item.textContent = msg;
-            messages.appendChild(item);
-            window.scrollTo(0, document.body.scrollHeight);
-        });
+        // Handle errors
+        eventSource.onerror = function (event) {
+            console.error('EventSource failed:', event);
+            eventSource.close(); // Close the connection on error
+        };
     </script>
 </body>
 
