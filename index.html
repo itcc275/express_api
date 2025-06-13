@@ -5,28 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Express API Client</title>
-    <script>
-        // Function to fetch data from the Express API
-        async function fetchData(lastValue) {
-            try {
-                const response = await fetch(`/getValue?lastValue=${lastValue}`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                document.getElementById('abc').innerText = data.value;
-                fetchData(data.value); // Recursive call to continue long polling
-            } catch (error) {
-                console.error('There has been a problem with your fetch operation:', error);
-            }
-        }
-        fetchData(); // Initial fetch
-    </script>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 </head>
 
 <body>
-    <h1>Long Polling example</h1>
-    <div id="abc"></div>
+    <h1>Web Socket example</h1>
+    <input id="input" type="text" />
+    <ul id="messages"></ul>
+    <script>
+        const socket = io(); // Initialize Socket.IO client equivalent to window.io
+        const input = document.getElementById('input');
+        const messages = document.getElementById('messages');
+
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (input.value) {
+                    console.log(input);
+                    socket.emit('chat message', input.value);
+                    input.value = '';
+                }
+            }
+        });
+
+        socket.on('chat message', function (msg) {
+            const item = document.createElement('li');
+            item.textContent = msg;
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+    </script>
 </body>
 
 </html>
