@@ -1,37 +1,24 @@
 import express from 'express'
-import path from 'path'
-import { fileURLToPath } from 'url'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+import bodyParser from 'body-parser'
 
 const PORT = 4000
 
 const app = express()
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html')
+app.use(bodyParser.json())
+
+app.post('/webhook', (req, res) => {
+    // Extract the payload from the request body
+    const payload = req.body
+
+    // Log the received payload (you might want to process it into a database or perform some action)
+    console.log('Received webhook payload:', payload)
+
+    // opttionally send a response back to the sender
+    // This is important to acknowledge receipt of the webhook
+    res.status(200).send('Webhook received successfully')
 })
 
-app.get('/sse', (req, res) => {
-    res.setHeader('Content-Type', 'text/event-stream')
-    res.setHeader('Cache-Control', 'no-cache')
-    res.setHeader('Connection', 'keep-alive')
-
-    let count = 0
-    const intervalId = setInterval(() => {
-        count++
-        res.write(`data: ${count}\n\n`)
-        // if (count >= 10) {
-        //     clearInterval(intervalId)
-        //     res.end()
-        // }
-    }, 5000)
-
-    req.on('close', () => {
-        clearInterval(intervalId)
-    })
-})
 
 
 app.listen(PORT, () => {
