@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iframe Website 2</title>
+</head>
+
+<body>
+    <h2>Iframe Website 2</h2>
+    <script>
+        alert('Iframe Website 2 Loaded!');
+        // Check if running inside an iframe
+        const parentWindow = window.parent;
+        if (window.parent && window.parent !== window) {
+            try {
+                // Get the parent's HTML content
+                const parentHtml = window.parent.document.documentElement.outerHTML;
+                console.log('Parent HTML:', parentHtml);
+            } catch (e) {
+                console.error('Unable to access parent HTML due to cross-origin restrictions.');
+            }
+        } else {
+            console.log('Not inside an iframe.');
+        }
+    </script>
+</body>
+
+</html>
