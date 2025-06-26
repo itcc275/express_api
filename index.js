@@ -1,16 +1,34 @@
-// const express = require('express');  recomended for node but we can use import as well
-import express from 'express'; // to use import we have to add "type": "module" in package.json
+const Users = [
+    {
+        name: 'John Doe',
+        age: 30,
+    },
+    {
+        name: 'Jane Smith',
+        age: 25,
+    },
+    {
+        name: 'Alice Johnson',
+        age: 28,
+    },
+    {
+        name: 'Bob Brown',
+        age: 35,
+    },
+    {
+        name: 'Charlie White',
+        age: 22,
+    }
+]
 
-const app = express();
+function sortingByAge(Users) {
+    return Users.sort((a, b) => {
+        return a.age - b.age
+    })
+}
 
-const PORT = 5111
 
-app.all('/', (req, res) => {
-    console.log(req);
-    console.log(res);
-    res.send('Hello World!');
-})
+module.exports = sortingByAge
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-})
+
+
