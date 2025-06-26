@@ -1,14 +1,16 @@
 // const express = require('express');  recomended for node but we can use import as well
 import express from 'express'; // to use import we have to add "type": "module" in package.json
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-const PORT = 5111
+const app = express()
 
-app.all('/', (req, res) => {
-    console.log(req);
-    console.log(res);
-    res.send('Hello World!');
+const PORT = process.env.PORT || 3000;
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
 })
 
 app.listen(PORT, () => {
