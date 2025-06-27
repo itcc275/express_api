@@ -1,34 +1,20 @@
-const Users = [
-    {
-        name: 'John Doe',
-        age: 30,
-    },
-    {
-        name: 'Jane Smith',
-        age: 25,
-    },
-    {
-        name: 'Alice Johnson',
-        age: 28,
-    },
-    {
-        name: 'Bob Brown',
-        age: 35,
-    },
-    {
-        name: 'Charlie White',
-        age: 22,
+const isPalindrome = (input) => {
+    if (typeof input === 'object') {
+        return false
     }
-]
+    if (!input) {
+        return null;
+    }
+    input = input.replaceAll(" ", "")
+    let resturnValue = true
+    for (let i = 0; i < input.length / 2; i++) {
+        if (input[i].toLowerCase() !== input[input.length - 1 - i].toLowerCase()) {
+            resturnValue = false;
+        }
+    }
+    return resturnValue
+};
 
-function sortingByAge(Users) {
-    return Users.sort((a, b) => {
-        return a.age - b.age
-    })
-}
+console.log(isPalindrome(['racecar'])); // true
 
-
-module.exports = sortingByAge
-
-
-
+module.exports = isPalindrome
