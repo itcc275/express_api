@@ -1,4 +1,4 @@
-import sum from "../src/utils/sum";
+import sum from "../../src/utils/sum";
 
 it('adds 1 + 2 to equal 3', () => {
     const result = sum(1, 2);

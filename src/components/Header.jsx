@@ -17,8 +17,6 @@ const { Title } = Typography;
 
 function Header({ children }) {
     const location = useLocation()
-    console.log(location.pathname);
-    // Responsive Header with Drawer for mobile
 
     const menuItems = [
         {
