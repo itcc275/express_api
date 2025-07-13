@@ -29,6 +29,10 @@ function App() {
             onClick={() => {
               setNotes([...notes, newNote])
               sessionStorage.setItem('notes', JSON.stringify([...notes, newNote]))
+              localStorage.setItem('notes', JSON.stringify([...notes, newNote]))
+              document.cookie = `notes=${JSON.stringify([...notes, newNote])}; path=/; max-age=31536000`
+              // Cannot set HttpOnly cookies from client-side JavaScript.
+              // HttpOnly cookies must be set from the server via the Set-Cookie HTTP header.
               setNewNote('')
             }}
             style={{
@@ -65,6 +69,8 @@ function App() {
                 onClick={() => {
                   setNotes(notes.filter((_, i) => i !== index))
                   sessionStorage.setItem('notes', JSON.stringify(notes.filter((_, i) => i !== index)))
+                  localStorage.setItem('notes', JSON.stringify(notes.filter((_, i) => i !== index)))
+                  document.cookie = `notes=${JSON.stringify(notes.filter((_, i) => i !== index))}; path=/; max-age=31536000`
                 }}
               >
                 Remove
@@ -73,6 +79,18 @@ function App() {
           ))}
         </div>
       </div>
+      <button
+        onClick={() => {
+          fetch('/api/logout', { method: 'POST' })
+            .then(() => {
+              sessionStorage.clear();
+              localStorage.clear();
+              document.cookie = "notes=; path=/; max-age=0";
+              // window.location.reload();
+            });
+        }}
+      >Logout</button>
+
     </>
   )
 }
